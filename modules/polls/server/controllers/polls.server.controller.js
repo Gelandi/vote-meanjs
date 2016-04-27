@@ -34,8 +34,8 @@ exports.read = function(req, res) {
   // convert mongoose document to JSON
   var poll = req.poll ? req.poll.toJSON() : {};
 
-  // Add a custom field to the Article, for determining if the current User is the "owner".
-  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
+  // Add custom field to the Poll, for determining if the current User is the "owner".
+  // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Poll model.
   poll.isCurrentUserOwner = req.user && poll.user && poll.user._id.toString() === req.user._id.toString() ? true : false;
 
   res.jsonp(poll);

@@ -10,12 +10,32 @@ var mongoose = require('mongoose'),
  * Poll Schema
  */
 var PollSchema = new Schema({
-  name: {
+  question: {
     type: String,
     default: '',
-    required: 'Please fill Poll name',
+    required: 'Please enter poll question',
     trim: true
   },
+  option1: {
+    type: String,
+    default: '',
+    required: 'Please enter a poll option',
+    trim: true
+  },
+    option1_score: {
+    type: Number,
+    default: 0,
+  },
+  option2: {
+    type: String,
+    default: '',
+    required: 'Please enter a poll option',
+    trim: true
+  },
+    option2_score: {
+    type: Number,
+    default: 0,
+  },  
   created: {
     type: Date,
     default: Date.now

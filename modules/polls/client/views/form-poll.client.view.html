@@ -1,15 +1,29 @@
 <section>
   <div class="page-header">
-    <h1>{{vm.poll._id ? 'Edit Poll' : 'New Poll'}}</h1>
+    <h1>{{vm.poll._id ? 'Edit Poll' : 'Add a New Poll Question'}}</h1>
   </div>
   <div class="col-md-12">
     <form name="vm.form.pollForm" class="form-horizontal" ng-submit="vm.save(vm.form.pollForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.poll.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.pollForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Poll name is required.</p>
+          <label class="control-label" for="question">Question</label>
+          <input name="question" type="text" ng-model="vm.poll.question" id="question" class="form-control" placeholder="Enter a question" required>
+          <div ng-messages="vm.form.pollForm.question.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">A question is required for each new poll.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="option1">Poll option #1</label>
+          <input name="option1" type="text" ng-model="vm.poll.option1" id="option1" class="form-control" placeholder="Enter a votable option" required>
+          <div ng-messages="vm.form.pollForm.option1.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">At least two options are required for each new poll.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="option2">Poll option #2</label>
+          <input name="option2" type="text" ng-model="vm.poll.option2" id="option2" class="form-control" placeholder="Enter a votable option" required>
+          <div ng-messages="vm.form.pollForm.option2.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">At least two options are required for each new poll.</p>
           </div>
         </div>
         <div class="form-group">

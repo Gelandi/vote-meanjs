@@ -13,7 +13,7 @@
         <span data-ng-if="poll.user" data-ng-bind="poll.user.displayName"></span>
         <span data-ng-if="!poll.user">Deleted User</span>
       </small>
-      <h4 class="list-group-item-heading" data-ng-bind="poll.name"></h4>
+      <h4 class="list-group-item-heading" data-ng-bind="poll.question"></h4>
     </a>
   </div>
   <div class="alert alert-warning text-center" data-ng-if="vm.polls.$resolved && !vm.polls.length">

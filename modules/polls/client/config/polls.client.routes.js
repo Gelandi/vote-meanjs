@@ -46,7 +46,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Poll {{ pollResolve.name }}'
+          pageTitle: 'Edit Poll {{ pollResolve.question }}'
         }
       })
       .state('polls.view', {
@@ -58,7 +58,7 @@
           pollResolve: getPoll
         },
         data:{
-          pageTitle: 'Poll {{ articleResolve.name }}'
+          pageTitle: 'Poll {{ pollResolve.question }}'
         }
       });
   }
