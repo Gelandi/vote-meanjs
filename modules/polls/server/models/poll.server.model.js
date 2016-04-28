@@ -22,7 +22,7 @@ var PollSchema = new Schema({
     required: 'Please enter a poll option',
     trim: true
   },
-    option1_score: {
+  option1_score: {
     type: Number,
     default: 0,
   },
@@ -32,7 +32,7 @@ var PollSchema = new Schema({
     required: 'Please enter a poll option',
     trim: true
   },
-    option2_score: {
+  option2_score: {
     type: Number,
     default: 0,
   },  
@@ -43,6 +43,10 @@ var PollSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  votes: {
+    type: [Schema.ObjectId],
+    default: []
   }
 });
 

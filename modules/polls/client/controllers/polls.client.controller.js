@@ -27,8 +27,10 @@
 
     // Save Poll
     function save(isValid) {
+      console.log('SAVING!');
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.pollForm');
+        console.log('INVALID!');
         return false;
       }
 
@@ -40,12 +42,15 @@
       }
 
       function successCallback(res) {
+        console.log('Sucess!');
         $state.go('polls.view', {
           pollId: res._id
         });
       }
 
       function errorCallback(res) {
+        console.log('ERROR!');
+        console.log(res.data.message);
         vm.error = res.data.message;
       }
     }

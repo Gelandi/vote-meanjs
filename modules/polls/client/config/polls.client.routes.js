@@ -52,7 +52,7 @@
       .state('polls.view', {
         url: '/:pollId',
         templateUrl: 'modules/polls/client/views/view-poll.client.view.html',
-        controller: 'PollsController',
+        controller: 'PollsViewController',
         controllerAs: 'vm',
         resolve: {
           pollResolve: getPoll

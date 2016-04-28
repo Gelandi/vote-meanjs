@@ -38,6 +38,8 @@ exports.read = function(req, res) {
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Poll model.
   poll.isCurrentUserOwner = req.user && poll.user && poll.user._id.toString() === req.user._id.toString() ? true : false;
 
+  poll.currentUser = req.user._id.toString();
+
   res.jsonp(poll);
 };
 
@@ -45,7 +47,11 @@ exports.read = function(req, res) {
  * Update a Poll
  */
 exports.update = function(req, res) {
+  console.log('UPDATE');
   var poll = req.poll ;
+  console.log('poll._id is '+poll._id);
+  console.log('poll.option1_score is '+poll.option1_score);
+  console.log('poll.votes is '+poll.votes);
 
   poll = _.extend(poll , req.body);
 
@@ -55,13 +61,14 @@ exports.update = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log('UPDATE RESPONSE');
       res.jsonp(poll);
     }
   });
 };
 
 /**
- * Delete an Poll
+ * Delete a Poll
  */
 exports.delete = function(req, res) {
   var poll = req.poll ;
