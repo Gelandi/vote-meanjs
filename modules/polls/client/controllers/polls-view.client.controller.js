@@ -18,9 +18,16 @@
     vm.remove = remove;
     vm.save = save;
 
-    console.log(JSON.stringify(vm.poll.currentUser));
+    console.log('currentUser is '+JSON.stringify(vm.poll.currentUser));
     vm.poll.noOtherVote = checkOtherVote();
     vm.poll.hasVoted = checkVote();
+
+    vm.poll.total_score = vm.poll.option1_score + vm.poll.option2_score;
+    vm.poll.style1 = 'width:'+(vm.poll.option1_score/vm.poll.total_score*100).toString()+'%';
+    vm.poll.style2 = 'width:'+(vm.poll.option2_score/vm.poll.total_score*100).toString()+'%';
+
+    console.log('style1 is '+vm.poll.style1);
+    console.log('style2 is '+vm.poll.style2);
 
     function checkOtherVote(){
       var result = true;
@@ -52,8 +59,9 @@
       else { return false;}
     }
 
-    vm.userVote = function() {
-      vm.poll.option1_score++;
+    vm.userVote = function(id) {
+      if (id === 1){vm.poll.option1_score++;}
+      if (id === 2){vm.poll.option2_score++;}
       vm.poll.votes.push(vm.poll.currentUser);
       console.log('votes are '+JSON.stringify(poll.votes));
       console.log('VOTED!');
@@ -63,7 +71,7 @@
     // Remove existing Poll
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
-        vm.poll.$remove($state.go('polls.list', {}, {reload: true}));
+        vm.poll.$remove($state.go('polls.list', { }, { reload: true }));
       }
     }
 
@@ -86,7 +94,7 @@
         console.log('successCallback Sucess!');
         $state.go('polls.view', {
           pollId: res._id
-        }, {reload: true});
+        }, { reload: true });
       }
 
       function errorCallback(res) {

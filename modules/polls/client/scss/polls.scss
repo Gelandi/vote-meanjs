@@ -1,0 +1,38 @@
+$color0: #A9ACF8;
+$color1: #9EA1F8;
+$color2: #9397F8;
+$color3: #878CF8;
+$color4: #7C81F8;
+$color5: #6B3B7A;
+$color6: #593166;
+$color7: #472751;
+$color8: #351D3D;
+$color9: #231328;
+$colorA: #3D2B13;
+$colorB: #643618;
+$colorC: #5C571D;
+$colorD: #584B3C;
+$colorE: #7A5626;
+
+
+.bar1 {
+	background-color: $colorA;
+}
+
+.bar2 {
+	background-color: $colorB;
+}
+
+.page-header{
+	background-color: $color2;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.poll-view{
+	background-color: $color0;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

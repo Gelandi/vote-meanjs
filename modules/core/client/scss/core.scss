@@ -1,0 +1,63 @@
+$color0: #A9ACF8;
+$color1: #9EA1F8;
+$color2: #9397F8;
+$color3: #878CF8;
+$color4: #7C81F8;
+$color5: #6B3B7A;
+$color6: #593166;
+$color7: #472751;
+$color8: #351D3D;
+$color9: #231328;
+
+.my-body {
+  background-color: $color8;
+}
+.my-nav{
+  background-color: $color5;
+  color: $color3;
+}
+.content {
+  margin-top: 30px;
+  padding-bottom: 30px;
+  background-color: $color8;
+}
+.undecorated-link:hover {
+  text-decoration: none;
+}
+[ng\:cloak],
+[ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}
+.header-profile-image {
+  opacity: 0.8;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.open .header-profile-image,
+a:hover .header-profile-image {
+  opacity: 1;
+}
+.user-header-dropdown-toggle {
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+}
+.user-primary-account {
+  font-size: 30px;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+}
+.error-text {
+  display: none;
+}
+.has-error .help-block.error-text {
+  display: block;
+}
+.has-error .help-inline.error-text {
+  display: inline;
+}
