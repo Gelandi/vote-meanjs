@@ -13,8 +13,20 @@ $color9: #231328;
   background-color: $color8;
 }
 .my-nav{
-  background-color: $color5;
-  color: $color3;
+  background-color: $color6;
+  color: $color4;
+}
+
+.nav{
+  background-color: $color6;
+  color: $color4;
+}
+
+.my-navbar-header {
+  background-color: $color8;
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 10px;
 }
 .content {
   margin-top: 30px;

@@ -4,6 +4,22 @@
 .bar2 {
   background-color: #643618; }
 
+.my-card {
+  background-color: #7C81F8;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 20px; }
+
+.my-polloption {
+  background-color: #A9ACF8;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-bottom: 10px; }
+
+.my-text-white {
+  color: #fff; }
+
 .page-header {
   background-color: #9397F8;
   padding-left: 20px;

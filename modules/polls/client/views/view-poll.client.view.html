@@ -1,5 +1,8 @@
 <section>
-  <div class="page-header">
+<br>
+<br>
+  <div class="my-card">
+      <div class="page-header">
     <h1 data-ng-bind="vm.poll.question"></h1>
   </div>
   <div class="pull-right" data-ng-hide="vm.poll.hasVoted">
@@ -8,7 +11,8 @@
   </div>
   <div class="poll-view" data-ng-show="vm.poll.hasVoted">
     <div class="row">
-      <div style="width:50%">{{vm.poll.option1}}</div><div class="bar1" style={{vm.poll.style1}}>.</div>
+      <div style="width:50%">{{vm.poll.option1}}</div>
+      <div class="bar1" style={{vm.poll.style1}}>.</div>
     </div>
     <div class="row">
       <div>{{vm.poll.option2}}</div><div class="bar2" style={{vm.poll.style2}}>.</div>
@@ -32,7 +36,7 @@
     </div>
   </div>
   <small>
-    <em class="text-muted">
+    <em>
       Posted on
       <span data-ng-bind="vm.poll.created | date:'mediumDate'"></span>
       by
@@ -41,4 +45,5 @@
       <span data-ng-if="!vm.poll.user">Deleted User</span>
     </em>
   </small>
+  </div>
 </section>

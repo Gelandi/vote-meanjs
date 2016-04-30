@@ -18,6 +18,20 @@
     vm.remove = remove;
     vm.save = save;
 
+    if (!vm.poll._id){
+      vm.poll.options = [{ optionText: 'Poll option #1', optionScore:0 },
+                         { optionText: 'Poll option #2', optionScore:0 }];
+      console.log('Into New Opt shit');
+    }
+
+    vm.addPollOption = function() {
+      var i = vm.poll.options.length + 1;
+      var t = 'Poll option #'+i;
+      vm.poll.options.push({ optionText: t, optionScore:0 });
+      console.log('You are tired '+i);
+
+    }
+
     // Remove existing Poll
     function remove() {
       if (confirm('Are you sure you want to delete?')) {

@@ -7,6 +7,22 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
+ * PollOption Schema
+ */
+var PollOptionSchema = new Schema({
+  optionText: {
+    type: String,
+    default: 'Poll Option default',
+    required: 'Enter a votable optionoin',
+    trim: true
+  },
+  optionScore : {
+    type: Number,
+    default: 0
+  }
+});
+
+/**
  * Poll Schema
  */
 var PollSchema = new Schema({
@@ -16,6 +32,10 @@ var PollSchema = new Schema({
     required: 'Please enter poll question',
     trim: true
   },
+  optionsArray: {
+    type: [PollOptionSchema],
+    default: [PollOptionSchema,PollOptionSchema]
+  },
   option1: {
     type: String,
     default: '',
@@ -24,7 +44,7 @@ var PollSchema = new Schema({
   },
   option1_score: {
     type: Number,
-    default: 0,
+    default: 0
   },
   option2: {
     type: String,
@@ -34,7 +54,7 @@ var PollSchema = new Schema({
   },
   option2_score: {
     type: Number,
-    default: 0,
+    default: 0
   },  
   created: {
     type: Date,
@@ -50,4 +70,5 @@ var PollSchema = new Schema({
   }
 });
 
+mongoose.model('PollOption', PollOptionSchema);
 mongoose.model('Poll', PollSchema);
