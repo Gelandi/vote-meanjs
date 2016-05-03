@@ -6,7 +6,7 @@
     var $scope,
       PollsService;
 
-    //We can start by loading the main application module
+    // We can start by loading the main application module
     beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
@@ -38,6 +38,25 @@
         });
       });
 
+      describe('List Route', function () {
+        var liststate;
+        beforeEach(inject(function ($state) {
+          liststate = $state.get('polls.list');
+        }));
+
+        it('Should have the correct URL', function () {
+          expect(liststate.url).toEqual('');
+        });
+
+        it('Should not be abstract', function () {
+          expect(liststate.abstract).toBe(undefined);
+        });
+
+        it('Should have template', function () {
+          expect(liststate.templateUrl).toBe('modules/polls/client/views/list-polls.client.view.html');
+        });
+      });
+
       describe('View Route', function () {
         var viewstate,
           PollsController,
@@ -47,13 +66,14 @@
           viewstate = $state.get('polls.view');
           $templateCache.put('modules/polls/client/views/view-poll.client.view.html', '');
 
-          // create mock Poll
+          // create mock poll
           mockPoll = new PollsService({
             _id: '525a8422f6d0f87f0e407a33',
-            name: 'Poll Name'
+            title: 'An Poll about MEAN',
+            content: 'MEAN rocks!'
           });
 
-          //Initialize Controller
+          // Initialize Controller
           PollsController = $controller('PollsController as vm', {
             $scope: $scope,
             pollResolve: mockPoll
@@ -75,7 +95,7 @@
           })).toEqual('/polls/1');
         }));
 
-        it('should attach an Poll to the controller scope', function () {
+        it('should attach an poll to the controller scope', function () {
           expect($scope.vm.poll._id).toBe(mockPoll._id);
         });
 
@@ -97,10 +117,10 @@
           createstate = $state.get('polls.create');
           $templateCache.put('modules/polls/client/views/form-poll.client.view.html', '');
 
-          // create mock Poll
+          // create mock poll
           mockPoll = new PollsService();
 
-          //Initialize Controller
+          // Initialize Controller
           PollsController = $controller('PollsController as vm', {
             $scope: $scope,
             pollResolve: mockPoll
@@ -120,7 +140,7 @@
           expect($state.href(createstate)).toEqual('/polls/create');
         }));
 
-        it('should attach an Poll to the controller scope', function () {
+        it('should attach an poll to the controller scope', function () {
           expect($scope.vm.poll._id).toBe(mockPoll._id);
           expect($scope.vm.poll._id).toBe(undefined);
         });
@@ -143,13 +163,14 @@
           editstate = $state.get('polls.edit');
           $templateCache.put('modules/polls/client/views/form-poll.client.view.html', '');
 
-          // create mock Poll
+          // create mock poll
           mockPoll = new PollsService({
             _id: '525a8422f6d0f87f0e407a33',
-            name: 'Poll Name'
+            title: 'An Poll about MEAN',
+            content: 'MEAN rocks!'
           });
 
-          //Initialize Controller
+          // Initialize Controller
           PollsController = $controller('PollsController as vm', {
             $scope: $scope,
             pollResolve: mockPoll
@@ -171,7 +192,7 @@
           })).toEqual('/polls/1/edit');
         }));
 
-        it('should attach an Poll to the controller scope', function () {
+        it('should attach an poll to the controller scope', function () {
           expect($scope.vm.poll._id).toBe(mockPoll._id);
         });
 
@@ -188,6 +209,21 @@
         });
       });
 
+      describe('Handle Trailing Slash', function () {
+        beforeEach(inject(function ($state, $rootScope) {
+          $state.go('polls.list');
+          $rootScope.$digest();
+        }));
+
+        it('Should remove trailing slash', inject(function ($state, $location, $rootScope) {
+          $location.path('polls/');
+          $rootScope.$digest();
+
+          expect($location.path()).toBe('/polls');
+          expect($state.current.templateUrl).toBe('modules/polls/client/views/list-polls.client.view.html');
+        }));
+      });
+
     });
   });
-})();
+}());

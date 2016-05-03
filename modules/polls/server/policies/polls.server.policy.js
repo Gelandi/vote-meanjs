@@ -48,7 +48,7 @@ exports.invokeRolesPolicies = function () {
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an Poll is being processed and the current user created it then allow any manipulation
+  // If an poll is being processed and the current user created it then allow any manipulation
   if (req.poll && req.user && req.poll.user && req.poll.user.id === req.user.id) {
     return next();
   }

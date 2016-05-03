@@ -46,10 +46,11 @@
       Authentication = _Authentication_;
       PollsService = _PollsService_;
 
-      // create mock Poll
+      // create mock poll
       mockPoll = new PollsService({
         _id: '525a8422f6d0f87f0e407a33',
-        name: 'Poll Name'
+        title: 'An Poll about MEAN',
+        content: 'MEAN rocks!'
       });
 
       // Mock logged in user
@@ -63,7 +64,7 @@
         pollResolve: {}
       });
 
-      //Spy on state go
+      // Spy on state go
       spyOn($state, 'go');
     }));
 
@@ -71,9 +72,10 @@
       var samplePollPostData;
 
       beforeEach(function () {
-        // Create a sample Poll object
+        // Create a sample poll object
         samplePollPostData = new PollsService({
-          name: 'Poll Name'
+          title: 'An Poll about MEAN',
+          content: 'MEAN rocks!'
         });
 
         $scope.vm.poll = samplePollPostData;
@@ -87,7 +89,7 @@
         $scope.vm.save(true);
         $httpBackend.flush();
 
-        // Test URL redirection after the Poll was created
+        // Test URL redirection after the poll was created
         expect($state.go).toHaveBeenCalledWith('polls.view', {
           pollId: mockPoll._id
         });
@@ -108,11 +110,11 @@
 
     describe('vm.save() as update', function () {
       beforeEach(function () {
-        // Mock Poll in $scope
+        // Mock poll in $scope
         $scope.vm.poll = mockPoll;
       });
 
-      it('should update a valid Poll', inject(function (PollsService) {
+      it('should update a valid poll', inject(function (PollsService) {
         // Set PUT response
         $httpBackend.expectPUT(/api\/polls\/([0-9a-fA-F]{24})$/).respond();
 
@@ -141,12 +143,12 @@
 
     describe('vm.remove()', function () {
       beforeEach(function () {
-        //Setup Polls
+        // Setup polls
         $scope.vm.poll = mockPoll;
       });
 
-      it('should delete the Poll and redirect to Polls', function () {
-        //Return true on confirm message
+      it('should delete the poll and redirect to polls', function () {
+        // Return true on confirm message
         spyOn(window, 'confirm').and.returnValue(true);
 
         $httpBackend.expectDELETE(/api\/polls\/([0-9a-fA-F]{24})$/).respond(204);
@@ -157,8 +159,8 @@
         expect($state.go).toHaveBeenCalledWith('polls.list');
       });
 
-      it('should should not delete the Poll and not redirect', function () {
-        //Return false on confirm message
+      it('should should not delete the poll and not redirect', function () {
+        // Return false on confirm message
         spyOn(window, 'confirm').and.returnValue(false);
 
         $scope.vm.remove();
@@ -167,4 +169,4 @@
       });
     });
   });
-})();
+}());

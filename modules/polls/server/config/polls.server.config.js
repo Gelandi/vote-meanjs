@@ -7,7 +7,7 @@ var path = require('path'),
   config = require(path.resolve('./config/config'));
 
 /**
- * Polls module init function.
+ * Module init function.
  */
 module.exports = function (app, db) {
 

@@ -1,85 +1,80 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * Module dependencies
  */
 var path = require('path'),
   mongoose = require('mongoose'),
   Poll = mongoose.model('Poll'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a Poll
+ * Create an poll
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   var poll = new Poll(req.body);
   poll.user = req.user;
 
-  poll.save(function(err) {
+  poll.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(poll);
+      res.json(poll);
     }
   });
 };
 
 /**
- * Show the current Poll
+ * Show the current poll
  */
-exports.read = function(req, res) {
+exports.read = function (req, res) {
   // convert mongoose document to JSON
   var poll = req.poll ? req.poll.toJSON() : {};
 
-  // Add custom field to the Poll, for determining if the current User is the "owner".
+  // Add a custom field to the Poll, for determining if the current User is the "owner".
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Poll model.
-  poll.isCurrentUserOwner = req.user && poll.user && poll.user._id.toString() === req.user._id.toString() ? true : false;
+  poll.isCurrentUserOwner = !!(req.user && poll.user && poll.user._id.toString() === req.user._id.toString());
 
   poll.currentUser = req.user._id.toString();
 
-  res.jsonp(poll);
+  res.json(poll);
 };
 
 /**
- * Update a Poll
+ * Update an poll
  */
-exports.update = function(req, res) {
-  console.log('UPDATE');
-  var poll = req.poll ;
-  console.log('poll._id is '+poll._id);
-  console.log('poll.option1_score is '+poll.option1_score);
-  console.log('poll.votes is '+poll.votes);
+exports.update = function (req, res) {
+  var poll = req.poll;
 
-  poll = _.extend(poll , req.body);
+  poll.title = req.body.title;
+  poll.content = req.body.content;
 
-  poll.save(function(err) {
+  poll.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log('UPDATE RESPONSE');
-      res.jsonp(poll);
+      res.json(poll);
     }
   });
 };
 
 /**
- * Delete a Poll
+ * Delete an poll
  */
-exports.delete = function(req, res) {
-  var poll = req.poll ;
+exports.delete = function (req, res) {
+  var poll = req.poll;
 
-  poll.remove(function(err) {
+  poll.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(poll);
+      res.json(poll);
     }
   });
 };
@@ -87,14 +82,14 @@ exports.delete = function(req, res) {
 /**
  * List of Polls
  */
-exports.list = function(req, res) { 
-  Poll.find().sort('-created').populate('user', 'displayName').exec(function(err, polls) {
+exports.list = function (req, res) {
+  Poll.find().sort('-created').populate('user', 'displayName').exec(function (err, polls) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.jsonp(polls);
+      res.json(polls);
     }
   });
 };
@@ -102,7 +97,7 @@ exports.list = function(req, res) {
 /**
  * Poll middleware
  */
-exports.pollByID = function(req, res, next, id) {
+exports.pollByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -115,7 +110,7 @@ exports.pollByID = function(req, res, next, id) {
       return next(err);
     } else if (!poll) {
       return res.status(404).send({
-        message: 'No Poll with that identifier has been found'
+        message: 'No poll with that identifier has been found'
       });
     }
     req.poll = poll;

@@ -5,11 +5,10 @@
     .module('polls')
     .run(menuConfig);
 
-  menuConfig.$inject = ['Menus'];
+  menuConfig.$inject = ['menuService'];
 
-  function menuConfig(Menus) {
-    // Set top bar menu items
-    Menus.addMenuItem('topbar', {
+  function menuConfig(menuService) {
+    menuService.addMenuItem('topbar', {
       title: 'Polls',
       state: 'polls',
       type: 'dropdown',
@@ -17,16 +16,16 @@
     });
 
     // Add the dropdown list item
-    Menus.addSubMenuItem('topbar', 'polls', {
+    menuService.addSubMenuItem('topbar', 'polls', {
       title: 'List Polls',
       state: 'polls.list'
     });
 
     // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'polls', {
+    menuService.addSubMenuItem('topbar', 'polls', {
       title: 'Create Poll',
       state: 'polls.create',
       roles: ['user']
     });
   }
-})();
+}());

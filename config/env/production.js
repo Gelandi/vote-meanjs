@@ -7,6 +7,8 @@ module.exports = {
     certificate: './config/sslcerts/cert.pem'
   },
   port: process.env.PORT || 8443,
+  // Binding to 127.0.0.1 is safer in production.
+  host: process.env.HOST || '0.0.0.0',
   db: {
     uri: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/mean',
     options: {
@@ -27,10 +29,10 @@ module.exports = {
         directoryPath: process.env.LOG_DIR_PATH || process.cwd(),
         fileName: process.env.LOG_FILE || 'access.log',
         rotatingLogs: { // for more info on rotating logs - https://github.com/holidayextras/file-stream-rotator#usage
-          active: process.env.LOG_ROTATING_ACTIVE === 'true' ? true : false, // activate to use rotating logs 
+          active: process.env.LOG_ROTATING_ACTIVE === 'true', // activate to use rotating logs
           fileName: process.env.LOG_ROTATING_FILE || 'access-%DATE%.log', // if rotating logs are active, this fileName setting will be used
           frequency: process.env.LOG_ROTATING_FREQUENCY || 'daily',
-          verbose: process.env.LOG_ROTATING_VERBOSE === 'true' ? true : false
+          verbose: process.env.LOG_ROTATING_VERBOSE === 'true'
         }
       }
     }
@@ -77,9 +79,9 @@ module.exports = {
     }
   },
   seedDB: {
-    seed: process.env.MONGO_SEED === 'true' ? true : false,
+    seed: process.env.MONGO_SEED === 'true',
     options: {
-      logResults: process.env.MONGO_SEED_LOG_RESULTS === 'false' ? false : true,
+      logResults: process.env.MONGO_SEED_LOG_RESULTS !== 'false',
       seedUser: {
         username: process.env.MONGO_SEED_USER_USERNAME || 'user',
         provider: 'local',

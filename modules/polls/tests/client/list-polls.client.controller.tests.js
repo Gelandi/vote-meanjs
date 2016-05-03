@@ -46,10 +46,11 @@
       Authentication = _Authentication_;
       PollsService = _PollsService_;
 
-      // create mock article
+      // create mock poll
       mockPoll = new PollsService({
         _id: '525a8422f6d0f87f0e407a33',
-        name: 'Poll Name'
+        title: 'An Poll about MEAN',
+        content: 'MEAN rocks!'
       });
 
       // Mock logged in user
@@ -62,7 +63,7 @@
         $scope: $scope
       });
 
-      //Spy on state go
+      // Spy on state go
       spyOn($state, 'go');
     }));
 
@@ -73,7 +74,7 @@
         mockPollList = [mockPoll, mockPoll];
       });
 
-      it('should send a GET request and return all Polls', inject(function (PollsService) {
+      it('should send a GET request and return all polls', inject(function (PollsService) {
         // Set POST response
         $httpBackend.expectGET('api/polls').respond(mockPollList);
 
@@ -88,4 +89,4 @@
       }));
     });
   });
-})();
+}());

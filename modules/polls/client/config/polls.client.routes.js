@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('polls')
+    .module('polls.routes')
     .config(routeConfig);
 
   routeConfig.$inject = ['$stateProvider'];
@@ -33,7 +33,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle : 'Polls Create'
+          pageTitle: 'Polls Create'
         }
       })
       .state('polls.edit', {
@@ -46,7 +46,7 @@
         },
         data: {
           roles: ['user', 'admin'],
-          pageTitle: 'Edit Poll {{ pollResolve.question }}'
+          pageTitle: 'Edit Poll {{ pollResolve.title }}'
         }
       })
       .state('polls.view', {
@@ -57,8 +57,8 @@
         resolve: {
           pollResolve: getPoll
         },
-        data:{
-          pageTitle: 'Poll {{ pollResolve.question }}'
+        data: {
+          pageTitle: 'Poll {{ pollResolve.title }}'
         }
       });
   }
@@ -76,4 +76,4 @@
   function newPoll(PollsService) {
     return new PollsService();
   }
-})();
+}());

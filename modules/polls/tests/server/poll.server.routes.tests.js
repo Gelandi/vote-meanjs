@@ -11,7 +11,11 @@ var should = require('should'),
 /**
  * Globals
  */
-var app, agent, credentials, user, poll;
+var app,
+  agent,
+  credentials,
+  user,
+  poll;
 
 /**
  * Poll routes tests
@@ -44,17 +48,18 @@ describe('Poll CRUD tests', function () {
       provider: 'local'
     });
 
-    // Save a user to the test db and create new Poll
+    // Save a user to the test db and create new poll
     user.save(function () {
       poll = {
-        name: 'Poll name'
+        title: 'Poll Title',
+        content: 'Poll Content'
       };
 
       done();
     });
   });
 
-  it('should be able to save a Poll if logged in', function (done) {
+  it('should be able to save an poll if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -67,30 +72,30 @@ describe('Poll CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new Poll
+        // Save a new poll
         agent.post('/api/polls')
           .send(poll)
           .expect(200)
           .end(function (pollSaveErr, pollSaveRes) {
-            // Handle Poll save error
+            // Handle poll save error
             if (pollSaveErr) {
               return done(pollSaveErr);
             }
 
-            // Get a list of Polls
+            // Get a list of polls
             agent.get('/api/polls')
               .end(function (pollsGetErr, pollsGetRes) {
-                // Handle Poll save error
+                // Handle poll save error
                 if (pollsGetErr) {
                   return done(pollsGetErr);
                 }
 
-                // Get Polls list
+                // Get polls list
                 var polls = pollsGetRes.body;
 
                 // Set assertions
                 (polls[0].user._id).should.equal(userId);
-                (polls[0].name).should.match('Poll name');
+                (polls[0].title).should.match('Poll Title');
 
                 // Call the assertion callback
                 done();
@@ -99,7 +104,7 @@ describe('Poll CRUD tests', function () {
       });
   });
 
-  it('should not be able to save an Poll if not logged in', function (done) {
+  it('should not be able to save an poll if not logged in', function (done) {
     agent.post('/api/polls')
       .send(poll)
       .expect(403)
@@ -109,9 +114,9 @@ describe('Poll CRUD tests', function () {
       });
   });
 
-  it('should not be able to save an Poll if no name is provided', function (done) {
-    // Invalidate name field
-    poll.name = '';
+  it('should not be able to save an poll if no title is provided', function (done) {
+    // Invalidate title field
+    poll.title = '';
 
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -125,21 +130,21 @@ describe('Poll CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new Poll
+        // Save a new poll
         agent.post('/api/polls')
           .send(poll)
           .expect(400)
           .end(function (pollSaveErr, pollSaveRes) {
             // Set message assertion
-            (pollSaveRes.body.message).should.match('Please fill Poll name');
+            (pollSaveRes.body.message).should.match('Title cannot be blank');
 
-            // Handle Poll save error
+            // Handle poll save error
             done(pollSaveErr);
           });
       });
   });
 
-  it('should be able to update an Poll if signed in', function (done) {
+  it('should be able to update an poll if signed in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -152,32 +157,32 @@ describe('Poll CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new Poll
+        // Save a new poll
         agent.post('/api/polls')
           .send(poll)
           .expect(200)
           .end(function (pollSaveErr, pollSaveRes) {
-            // Handle Poll save error
+            // Handle poll save error
             if (pollSaveErr) {
               return done(pollSaveErr);
             }
 
-            // Update Poll name
-            poll.name = 'WHY YOU GOTTA BE SO MEAN?';
+            // Update poll title
+            poll.title = 'WHY YOU GOTTA BE SO MEAN?';
 
-            // Update an existing Poll
+            // Update an existing poll
             agent.put('/api/polls/' + pollSaveRes.body._id)
               .send(poll)
               .expect(200)
               .end(function (pollUpdateErr, pollUpdateRes) {
-                // Handle Poll update error
+                // Handle poll update error
                 if (pollUpdateErr) {
                   return done(pollUpdateErr);
                 }
 
                 // Set assertions
                 (pollUpdateRes.body._id).should.equal(pollSaveRes.body._id);
-                (pollUpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+                (pollUpdateRes.body.title).should.match('WHY YOU GOTTA BE SO MEAN?');
 
                 // Call the assertion callback
                 done();
@@ -186,13 +191,13 @@ describe('Poll CRUD tests', function () {
       });
   });
 
-  it('should be able to get a list of Polls if not signed in', function (done) {
-    // Create new Poll model instance
+  it('should be able to get a list of polls if not signed in', function (done) {
+    // Create new poll model instance
     var pollObj = new Poll(poll);
 
     // Save the poll
     pollObj.save(function () {
-      // Request Polls
+      // Request polls
       request(app).get('/api/polls')
         .end(function (req, res) {
           // Set assertion
@@ -205,16 +210,16 @@ describe('Poll CRUD tests', function () {
     });
   });
 
-  it('should be able to get a single Poll if not signed in', function (done) {
-    // Create new Poll model instance
+  it('should be able to get a single poll if not signed in', function (done) {
+    // Create new poll model instance
     var pollObj = new Poll(poll);
 
-    // Save the Poll
+    // Save the poll
     pollObj.save(function () {
       request(app).get('/api/polls/' + pollObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('name', poll.name);
+          res.body.should.be.instanceof(Object).and.have.property('title', poll.title);
 
           // Call the assertion callback
           done();
@@ -222,7 +227,7 @@ describe('Poll CRUD tests', function () {
     });
   });
 
-  it('should return proper error for single Poll with an invalid Id, if not signed in', function (done) {
+  it('should return proper error for single poll with an invalid Id, if not signed in', function (done) {
     // test is not a valid mongoose Id
     request(app).get('/api/polls/test')
       .end(function (req, res) {
@@ -234,19 +239,19 @@ describe('Poll CRUD tests', function () {
       });
   });
 
-  it('should return proper error for single Poll which doesnt exist, if not signed in', function (done) {
-    // This is a valid mongoose Id but a non-existent Poll
+  it('should return proper error for single poll which doesnt exist, if not signed in', function (done) {
+    // This is a valid mongoose Id but a non-existent poll
     request(app).get('/api/polls/559e9cd815f80b4c256a8f41')
       .end(function (req, res) {
         // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'No Poll with that identifier has been found');
+        res.body.should.be.instanceof(Object).and.have.property('message', 'No poll with that identifier has been found');
 
         // Call the assertion callback
         done();
       });
   });
 
-  it('should be able to delete an Poll if signed in', function (done) {
+  it('should be able to delete an poll if signed in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -259,17 +264,17 @@ describe('Poll CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new Poll
+        // Save a new poll
         agent.post('/api/polls')
           .send(poll)
           .expect(200)
           .end(function (pollSaveErr, pollSaveRes) {
-            // Handle Poll save error
+            // Handle poll save error
             if (pollSaveErr) {
               return done(pollSaveErr);
             }
 
-            // Delete an existing Poll
+            // Delete an existing poll
             agent.delete('/api/polls/' + pollSaveRes.body._id)
               .send(poll)
               .expect(200)
@@ -289,30 +294,30 @@ describe('Poll CRUD tests', function () {
       });
   });
 
-  it('should not be able to delete an Poll if not signed in', function (done) {
-    // Set Poll user
+  it('should not be able to delete an poll if not signed in', function (done) {
+    // Set poll user
     poll.user = user;
 
-    // Create new Poll model instance
+    // Create new poll model instance
     var pollObj = new Poll(poll);
 
-    // Save the Poll
+    // Save the poll
     pollObj.save(function () {
-      // Try deleting Poll
+      // Try deleting poll
       request(app).delete('/api/polls/' + pollObj._id)
         .expect(403)
         .end(function (pollDeleteErr, pollDeleteRes) {
           // Set message assertion
           (pollDeleteRes.body.message).should.match('User is not authorized');
 
-          // Handle Poll error error
+          // Handle poll error error
           done(pollDeleteErr);
         });
 
     });
   });
 
-  it('should be able to get a single Poll that has an orphaned user reference', function (done) {
+  it('should be able to get a single poll that has an orphaned user reference', function (done) {
     // Create orphan user creds
     var _creds = {
       username: 'orphan',
@@ -348,22 +353,22 @@ describe('Poll CRUD tests', function () {
           // Get the userId
           var orphanId = orphan._id;
 
-          // Save a new Poll
+          // Save a new poll
           agent.post('/api/polls')
             .send(poll)
             .expect(200)
             .end(function (pollSaveErr, pollSaveRes) {
-              // Handle Poll save error
+              // Handle poll save error
               if (pollSaveErr) {
                 return done(pollSaveErr);
               }
 
-              // Set assertions on new Poll
-              (pollSaveRes.body.name).should.equal(poll.name);
+              // Set assertions on new poll
+              (pollSaveRes.body.title).should.equal(poll.title);
               should.exist(pollSaveRes.body.user);
               should.equal(pollSaveRes.body.user._id, orphanId);
 
-              // force the Poll to have an orphaned user reference
+              // force the poll to have an orphaned user reference
               orphan.remove(function () {
                 // now signin with valid user
                 agent.post('/api/auth/signin')
@@ -375,18 +380,18 @@ describe('Poll CRUD tests', function () {
                       return done(err);
                     }
 
-                    // Get the Poll
+                    // Get the poll
                     agent.get('/api/polls/' + pollSaveRes.body._id)
                       .expect(200)
                       .end(function (pollInfoErr, pollInfoRes) {
-                        // Handle Poll error
+                        // Handle poll error
                         if (pollInfoErr) {
                           return done(pollInfoErr);
                         }
 
                         // Set assertions
                         (pollInfoRes.body._id).should.equal(pollSaveRes.body._id);
-                        (pollInfoRes.body.name).should.equal(poll.name);
+                        (pollInfoRes.body.title).should.equal(poll.title);
                         should.equal(pollInfoRes.body.user, undefined);
 
                         // Call the assertion callback
@@ -394,6 +399,163 @@ describe('Poll CRUD tests', function () {
                       });
                   });
               });
+            });
+        });
+    });
+  });
+
+  it('should be able to get a single poll if signed in and verify the custom "isCurrentUserOwner" field is set to "true"', function (done) {
+    // Create new poll model instance
+    poll.user = user;
+    var pollObj = new Poll(poll);
+
+    // Save the poll
+    pollObj.save(function () {
+      agent.post('/api/auth/signin')
+        .send(credentials)
+        .expect(200)
+        .end(function (signinErr, signinRes) {
+          // Handle signin error
+          if (signinErr) {
+            return done(signinErr);
+          }
+
+          // Get the userId
+          var userId = user.id;
+
+          // Save a new poll
+          agent.post('/api/polls')
+            .send(poll)
+            .expect(200)
+            .end(function (pollSaveErr, pollSaveRes) {
+              // Handle poll save error
+              if (pollSaveErr) {
+                return done(pollSaveErr);
+              }
+
+              // Get the poll
+              agent.get('/api/polls/' + pollSaveRes.body._id)
+                .expect(200)
+                .end(function (pollInfoErr, pollInfoRes) {
+                  // Handle poll error
+                  if (pollInfoErr) {
+                    return done(pollInfoErr);
+                  }
+
+                  // Set assertions
+                  (pollInfoRes.body._id).should.equal(pollSaveRes.body._id);
+                  (pollInfoRes.body.title).should.equal(poll.title);
+
+                  // Assert that the "isCurrentUserOwner" field is set to true since the current User created it
+                  (pollInfoRes.body.isCurrentUserOwner).should.equal(true);
+
+                  // Call the assertion callback
+                  done();
+                });
+            });
+        });
+    });
+  });
+
+  it('should be able to get a single poll if not signed in and verify the custom "isCurrentUserOwner" field is set to "false"', function (done) {
+    // Create new poll model instance
+    var pollObj = new Poll(poll);
+
+    // Save the poll
+    pollObj.save(function () {
+      request(app).get('/api/polls/' + pollObj._id)
+        .end(function (req, res) {
+          // Set assertion
+          res.body.should.be.instanceof(Object).and.have.property('title', poll.title);
+          // Assert the custom field "isCurrentUserOwner" is set to false for the un-authenticated User
+          res.body.should.be.instanceof(Object).and.have.property('isCurrentUserOwner', false);
+          // Call the assertion callback
+          done();
+        });
+    });
+  });
+
+  it('should be able to get single poll, that a different user created, if logged in & verify the "isCurrentUserOwner" field is set to "false"', function (done) {
+    // Create temporary user creds
+    var _creds = {
+      username: 'temp',
+      password: 'M3@n.jsI$Aw3$0m3'
+    };
+
+    // Create temporary user
+    var _user = new User({
+      firstName: 'Full',
+      lastName: 'Name',
+      displayName: 'Full Name',
+      email: 'temp@test.com',
+      username: _creds.username,
+      password: _creds.password,
+      provider: 'local'
+    });
+
+    _user.save(function (err, _user) {
+      // Handle save error
+      if (err) {
+        return done(err);
+      }
+
+      // Sign in with the user that will create the Poll
+      agent.post('/api/auth/signin')
+        .send(credentials)
+        .expect(200)
+        .end(function (signinErr, signinRes) {
+          // Handle signin error
+          if (signinErr) {
+            return done(signinErr);
+          }
+
+          // Get the userId
+          var userId = user._id;
+
+          // Save a new poll
+          agent.post('/api/polls')
+            .send(poll)
+            .expect(200)
+            .end(function (pollSaveErr, pollSaveRes) {
+              // Handle poll save error
+              if (pollSaveErr) {
+                return done(pollSaveErr);
+              }
+
+              // Set assertions on new poll
+              (pollSaveRes.body.title).should.equal(poll.title);
+              should.exist(pollSaveRes.body.user);
+              should.equal(pollSaveRes.body.user._id, userId);
+
+              // now signin with the temporary user
+              agent.post('/api/auth/signin')
+                .send(_creds)
+                .expect(200)
+                .end(function (err, res) {
+                  // Handle signin error
+                  if (err) {
+                    return done(err);
+                  }
+
+                  // Get the poll
+                  agent.get('/api/polls/' + pollSaveRes.body._id)
+                    .expect(200)
+                    .end(function (pollInfoErr, pollInfoRes) {
+                      // Handle poll error
+                      if (pollInfoErr) {
+                        return done(pollInfoErr);
+                      }
+
+                      // Set assertions
+                      (pollInfoRes.body._id).should.equal(pollSaveRes.body._id);
+                      (pollInfoRes.body.title).should.equal(poll.title);
+                      // Assert that the custom field "isCurrentUserOwner" is set to false since the current User didn't create it
+                      (pollInfoRes.body.isCurrentUserOwner).should.equal(false);
+
+                      // Call the assertion callback
+                      done();
+                    });
+                });
             });
         });
     });

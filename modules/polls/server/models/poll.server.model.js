@@ -16,7 +16,7 @@ var PollOptionSchema = new Schema({
     required: 'Enter a votable optionoin',
     trim: true
   },
-  optionScore : {
+  optionScore: {
     type: Number,
     default: 0
   }
@@ -34,7 +34,7 @@ var PollSchema = new Schema({
   },
   optionsArray: {
     type: [PollOptionSchema],
-    default: [PollOptionSchema,PollOptionSchema]
+    default: [PollOptionSchema, PollOptionSchema]
   },
   option1: {
     type: String,
@@ -55,7 +55,7 @@ var PollSchema = new Schema({
   option2_score: {
     type: Number,
     default: 0
-  },  
+  },
   created: {
     type: Date,
     default: Date.now

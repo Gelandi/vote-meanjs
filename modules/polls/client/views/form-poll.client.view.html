@@ -4,58 +4,87 @@
   </div>
   <div class="col-md-12 my-card">
     <fieldset>
-      <form name="vm.poll.pollsForm">
+      <form name="vm.poll.pollForm">
         <div class="list-group">
-          <div class="list-group-item my-polloption">
+          <div class="list-group-item my-polloption" ng-hide="vm.poll.pollForm.option1.$valid && vm.poll.pollForm.option0.$valid">
             <div class="form-group">
-              <label class="control-label" for="question">Question</label>
+              <label class="control-label" for="question">Question</label>vaid {{vm.poll.pollForm.question.$valid}}
               <input name="question" type="text" ng-model="vm.poll.question" id="question" class="form-control" placeholder="Enter a question" required>
               <div ng-messages="vm.form.pollForm.question.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">A question is required for each new poll.</p>
               </div>
             </div>
           </div>
-        </div>
-        <div class="list-group" ng-hide="vm.poll.pollsForm.question.$pristine">
-         <div data-ng-repeat="option in vm.poll.options" class="list-group-item my-polloption">
-          <div class="form-group">
-             <label>{{option.optionText}}</label>
-             <input name="optionText" type="text" ng-model="option.optionText" id="option" class="form-control" placeholder="Enter a votable option" required>
-             <div ng-messages="vm.form.pollForm.option1.$error" role="alert">
-               <p class="help-block error-text" ng-message="required">At least two options are required for each new poll</p>
-             </div>
+          <div class="list-group-item my-polloption" ng-show="vm.poll.pollForm.option1.$valid && vm.poll.pollForm.option0.$valid">
+            <h2>
+            {{vm.poll.question}}
+          </h2>
+            <button class="btn btn-default pull-right">
+              Submit
+            </button>
+            <button ng-click="vm.pollFormInit()" class="btn btn-default">
+              Reset
+            </button>
           </div>
-         </div>
-         <div class="list-group-item my-polloption">
-          <button ng-click="vm.addPollOption()" class="btn btn-default pull-right">
-            Add another option
-          </button>
-         </div>
         </div>
+        <div class="list-group my-polloption">
+          <div ng-show="vm.poll.pollForm.question.$valid">
+            <div data-ng-repeat="option in vm.poll.optionsArray track by $index" class="list-group-item my-polloption">
+              <div class="form-group">
+                <button name="option{{$index}}" ng-click="vm.dropPollOption($index)" ng-show="vm.checkDropOption()" class="btn btn-delete pull-right">
+                  Delete
+                </button>
+                <label>Poll Option #{{$index+1}}: {{option.optionText}}</label>
+                <input name="option{{$index}}" ng-model="option.optionText" type="text" class="form-control" placeholder="Enter a votable option" required>
+                <div ng-messages="vm.form.pollForm.option1.$error" role="alert">
+                  <p class="help-block error-text" ng-message="required">At least two options are required for each new poll</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="list-group-item" ng-show="vm.poll.pollForm.$valid">form valid is {{vm.poll.pollForm.$valid}}
+            <button ng-click="vm.addPollOption()" class="btn btn-default pull-right">
+              Add another option
+            </button>
+            <button ng-click="vm.setPollClose()" class="btn">
+              Poll closes at ?
+            </button>
+          </div>
+          <div class="list-group-item" ng-show="vm.poll.pollForm.$valid">This poll will close at, , from now.
+            <div class="col">
+              <div class="row-lg">
+                <label>
+                  <input type="radio" name="picker-chooser" default checked>This poll closes in </label>
+              </div>
+              <div class="row-lg">
+                <label>
+                  <input type="radio" name="picker-chooser">This poll closes at a specific time, </label>
+              </div>
+            </div>
+          </div>
       </form>
-      <form name="vm.form.pollForm" class="form-horizontal" ng-submit="vm.save(vm.form.pollForm.$valid)" novalidate>
+      <form name="vm.form.submitForm" class="form-horizontal" ng-submit="vm.save(vm.form.pollForm.$valid)" novalidate>
         <div class="form-group" show-errors>
           <label class="control-label my-text-white" for="option1">Poll option #1</label>
-          <input name="option1" type="text" ng-model="vm.poll.option1" id="option1" class="form-control" placeholder="Enter a votable option" required>
+          <input name="option1" type="text" ng-model="vm.poll.option1" id="option1" class="form-control" placeholder="Enter a votable option">
           <div ng-messages="vm.form.pollForm.option1.$error" role="alert">
             <p class="help-block error-text" ng-message="required">At least two options are required for each new poll.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label class="control-label my-text-white" for="option2">Poll option #2</label>
-          <input name="option2" type="text" ng-model="vm.poll.option2" id="option2" class="form-control" placeholder="Enter a votable option" required>
+          <input name="option2" type="text" ng-model="vm.poll.option2" id="option2" class="form-control" placeholder="Enter a votable option">
           <div ng-messages="vm.form.pollForm.option2.$error" role="alert">
             <p class="help-block error-text" ng-message="required">At least two options are required for each new poll.</p>
           </div>
         </div>
-
-          <div class="form-group">
-            <button type="submit" class="btn btn-default">{{vm.poll._id ? 'Update' : 'Create'}}</button>
-          </div>
-          <div ng-show="vm.error" class="text-danger">
-            <strong ng-bind="vm.error"></strong>
-          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">{{vm.poll._id ? 'Update' : 'Create'}}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
       </form>
     </fieldset>
-  </div>
+    </div>
 </section>

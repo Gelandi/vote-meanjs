@@ -1,14 +1,15 @@
 (function () {
   'use strict';
 
-  // Polls controller
+  // View single poll controller
+
   angular
     .module('polls')
     .controller('PollsViewController', PollsViewController);
 
   PollsViewController.$inject = ['$scope', '$state', 'Authentication', 'pollResolve'];
 
-  function PollsViewController ($scope, $state, Authentication, poll) {
+  function PollsViewController($scope, $state, Authentication, poll) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -18,52 +19,53 @@
     vm.remove = remove;
     vm.save = save;
 
-    console.log('currentUser is '+JSON.stringify(vm.poll.currentUser));
+    console.log('currentUser is ' + JSON.stringify(vm.poll.currentUser));
     vm.poll.noOtherVote = checkOtherVote();
     vm.poll.hasVoted = checkVote();
 
     vm.poll.total_score = vm.poll.option1_score + vm.poll.option2_score;
-    vm.poll.style1 = 'width:'+(vm.poll.option1_score/vm.poll.total_score*100).toString()+'%';
-    vm.poll.style2 = 'width:'+(vm.poll.option2_score/vm.poll.total_score*100).toString()+'%';
+    vm.poll.style1 = 'width:' + (vm.poll.option1_score / vm.poll.total_score * 100).toString() + '%';
+    vm.poll.style2 = 'width:' + (vm.poll.option2_score / vm.poll.total_score * 100).toString() + '%';
 
-    console.log('style1 is '+vm.poll.style1);
-    console.log('style2 is '+vm.poll.style2);
+    console.log('style1 is ' + vm.poll.style1);
+    console.log('style2 is ' + vm.poll.style2);
 
-    function checkOtherVote(){
+    function checkOtherVote() {
       var result = true;
-      if (vm.poll.votes.length>0){
-        console.log('other votes length is '+vm.poll.votes.length);
-        if (vm.poll.isCurrentUserOwner){
+      if (vm.poll.votes.length > 0) {
+        console.log('other votes length is ' + vm.poll.votes.length);
+        if (vm.poll.isCurrentUserOwner) {
           for (var i = vm.poll.votes.length - 1; i >= 0; i--) {
-            if (vm.poll.votes[i] !== vm.poll.currentUser){result = false;}
+            if (vm.poll.votes[i] !== vm.poll.currentUser) { result = false; }
           }
-          console.log('other vote user is '+vm.poll.currentUser);      
+          console.log('other vote user is ' + vm.poll.currentUser);
         }
       }
-      console.log('other vote result is '+result);
+      console.log('other vote result is ' + result);
       return result;
     }
 
     function checkVote() {
-      if (vm.poll.votes.length>0){
+      if (vm.poll.votes.length > 0) {
         var result = false;
-        console.log('id is '+JSON.stringify(vm.poll.currentUser));
-        console.log('votes are '+JSON.stringify(vm.poll.votes));
+        console.log('id is ' + JSON.stringify(vm.poll.currentUser));
+        console.log('votes are ' + JSON.stringify(vm.poll.votes));
         for (var i = vm.poll.votes.length - 1; i >= 0; i--) {
-          if (vm.poll.votes[i] === vm.poll.currentUser){result = true;}
+          if (vm.poll.votes[i] === vm.poll.currentUser) { result = true; }
         }
-        console.log('result is '+result);
-        console.log('user is '+vm.poll.currentUser);      
+        console.log('result is ' + result);
+        console.log('user is ' + vm.poll.currentUser);
         return result;
+      } else {
+        return false;
       }
-      else { return false;}
     }
 
-    vm.userVote = function(id) {
-      if (id === 1){vm.poll.option1_score++;}
-      if (id === 2){vm.poll.option2_score++;}
+    vm.userVote = function (id) {
+      if (id === 1) { vm.poll.option1_score++; }
+      if (id === 2) { vm.poll.option2_score++; }
       vm.poll.votes.push(vm.poll.currentUser);
-      console.log('votes are '+JSON.stringify(poll.votes));
+      console.log('votes are ' + JSON.stringify(poll.votes));
       console.log('VOTED!');
       save(true);
     };
@@ -71,7 +73,7 @@
     // Remove existing Poll
     function remove() {
       if (confirm('Are you sure you want to delete?')) {
-        vm.poll.$remove($state.go('polls.list', { }, { reload: true }));
+        vm.poll.$remove($state.go('polls.list', {}, { reload: true }));
       }
     }
 

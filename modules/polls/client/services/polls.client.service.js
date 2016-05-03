@@ -1,9 +1,8 @@
-//Polls service used to communicate Polls REST endpoints
 (function () {
   'use strict';
 
   angular
-    .module('polls')
+    .module('polls.services')
     .factory('PollsService', PollsService);
 
   PollsService.$inject = ['$resource'];
@@ -17,4 +16,4 @@
       }
     });
   }
-})();
+}());

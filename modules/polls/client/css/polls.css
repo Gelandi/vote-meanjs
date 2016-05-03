@@ -6,10 +6,7 @@
 
 .my-card {
   background-color: #7C81F8;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 20px; }
+  padding: 10px 10px 20px 10px; }
 
 .my-polloption {
   background-color: #A9ACF8;
