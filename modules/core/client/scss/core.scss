@@ -9,7 +9,7 @@ $color7: #472751;
 $color8: #351D3D;
 $color9: #231328;
 .my-body {
-  background-color: $color8;
+  background-color: $color5;
 }
 
 .my-nav {
@@ -24,10 +24,17 @@ $color9: #231328;
   padding-top: 10px;
 }
 
-.content {
+.my-content {
   margin-top: 30px;
   padding-bottom: 30px;
-  background-color: $color8;
+  padding-top: 20px;
+  background-color: $color5;
+}
+
+.my-container {
+  margin: 10px;
+  padding: 10px;
+  background-color: $color4;
 }
 
 .undecorated-link:hover {

@@ -34,17 +34,15 @@
 
 <body class="ng-cloak my-body">
   <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-  <section class="content">
-    <section class="container">
+  <section class="content my-content">
+    <section class="container my-container">
       {% block content %}{% endblock %}
     </section>
   </section>
   <!--Embedding The User Object-->
   <script type="text/javascript">
   var user = {
-    {
-      user | json | safe
-    }
+    user: user | json | safe
   };
   </script>
   <!--Load The Socket.io File-->
