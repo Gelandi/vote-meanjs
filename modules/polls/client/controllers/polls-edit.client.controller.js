@@ -4,11 +4,11 @@
   // Polls controller
   angular
     .module('polls')
-    .controller('PollsController', PollsController);
+    .controller('PollsEditController', PollsEditController);
 
-  PollsController.$inject = ['$scope', '$state', 'Authentication', 'pollResolve'];
+  PollsEditController.$inject = ['$scope', '$state', 'Authentication', 'pollResolve'];
 
-  function PollsController($scope, $state, Authentication, poll) {
+  function PollsEditController($scope, $state, Authentication, poll) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -95,4 +95,4 @@
       }
     }
   }
-})();
+}());

@@ -1,11 +1,19 @@
 (function (window) {
   'use strict';
 
-  var applicationModuleName = 'mean';
+  var applicationModuleName = 'vote-mean';
 
   var service = {
     applicationModuleName: applicationModuleName,
-    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'angularFileUpload'],
+    applicationModuleVendorDependencies: [
+      'ngResource',
+      'ngAnimate',
+      'ngMessages',
+      'ui.router',
+      'ui.bootstrap',
+      'angularFileUpload',
+      'angularjs-datetime-picker'
+    ],
     registerModule: registerModule
   };
 

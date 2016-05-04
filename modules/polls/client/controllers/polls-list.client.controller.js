@@ -12,4 +12,4 @@
 
     vm.polls = PollsService.query();
   }
-})();
+}());

@@ -26,7 +26,7 @@
       .state('polls.create', {
         url: '/create',
         templateUrl: 'modules/polls/client/views/form-poll.client.view.html',
-        controller: 'PollsController',
+        controller: 'PollsEditController',
         controllerAs: 'vm',
         resolve: {
           pollResolve: newPoll
